@@ -42,7 +42,7 @@ const FileUploader: React.FC = () => {
         log.info("---Server response:", data);
         console.log("---Server response:", data);
 
-        setMessage(`Upload: ${data.filename}, Rows: ${data.rows}`);
+        setMessage(`Upload: ${data.data.filename}, Rows: ${data.data.rows}`);
     } catch (error) {
         log.error("---Error uploading file:", error);
         setMessage("Error uploading file");
@@ -54,6 +54,8 @@ const FileUploader: React.FC = () => {
         <h2 className="text-lg font-semibold mb-2">Upload CSV</h2>
         <input
         type="file"
+        title="Upload CSV file"
+        placeholder="Choose a CSV file"
         accept=".csv"
         onChange={handleFileChange}
         className="mb-2"
