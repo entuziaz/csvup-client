@@ -93,7 +93,7 @@ describe('FileUploader', () => {
     })
     
     expect(log.info).toHaveBeenCalledWith('Uploading file:', 'test.csv')
-    expect(log.debug).toHaveBeenCalledWith('🔎 Response status:', 201)
+    expect(log.debug).toHaveBeenCalledWith('---Response status:', 201)
   })
 
   test('handles upload failure', async () => {

@@ -30,7 +30,7 @@ const FileUploader: React.FC = () => {
             body: formData,
         });
 
-        log.debug("🔎 Response status:", response.status);
+        log.debug("---Response status:", response.status);
 
         if (!response.ok) {
             const errorText = await response.text();
@@ -53,7 +53,7 @@ const FileUploader: React.FC = () => {
         <div className="p-4 border rounded-lg shadow-md w-96">
             <h2 className="text-lg font-semibold mb-2">Upload CSV</h2>
             <label htmlFor="file-upload" className="sr-only">
-                Upload CSV file
+                Upload CSV file 
             </label>
             <input
                 id="file-upload"
