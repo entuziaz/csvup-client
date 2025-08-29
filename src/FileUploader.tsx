@@ -1,5 +1,6 @@
 import React, { useState } from "react"; 
 import log from "loglevel"; 
+// import { set } from "astro:schema";
 
 log.setLevel(process.env.NODE_ENV === "development" ? "debug" : "error")
 
@@ -24,6 +25,7 @@ const FileUploader: React.FC = () => {
 
     try {
         log.info("Uploading file:", file.name);
+        setMessage("Uploading...");
 
         const response = await fetch("http://localhost:8000/api/v1/uploads/csv/", {
             method: "POST",
@@ -42,10 +44,42 @@ const FileUploader: React.FC = () => {
         log.info("---Server response:", data);
         console.log("---Server response:", data);
 
-        setMessage(`Upload: ${data.data.filename}, Rows: ${data.data.rows}`);
+        // setMessage(`Upload: ${data.data.filename}, Rows: ${data.data.rows}`);
+        // setMessage(`Upload successful: ${data.data.filename}, Successful rows: ${data.data.successful_rows}, Failed rows: ${data.data.failed_rows}`);
+        let messageText = `✅Upload successful!\n`;
+        messageText += `File: ${data.data.filename}\n`;
+        messageText += `Total rows: ${data.data.total_rows}\n`;
+        messageText += `✅Successful: ${data.data.successful_rows}\n`;
+        
+        if (data.data.duplicate_rows > 0) {
+            messageText += `⚠️Duplicates skipped: ${data.data.duplicate_rows}\n`;
+        }
+        
+        if (data.data.failed_rows > 0) {
+            messageText += `❌Failed: ${data.data.failed_rows}\n`;
+        }
+
+        setMessage(messageText);
+
     } catch (error) {
         log.error("---Error uploading file:", error);
-        setMessage("Error uploading file");
+        // setMessage("Error uploading file");
+
+        if (error instanceof Error) {
+            if (error.message.includes("Missing columns")) {
+                setMessage("Error: The CSV file is missing required columns. Please check the file format.");
+            } else if (error.message.includes("Malformed CSV")) {
+                setMessage("Error: The CSV file is malformed or corrupted. Please check the file.");
+            } else if (error.message.includes("Invalid file type")) {
+                setMessage("Error: Please upload a valid CSV file.");
+            } else if (error.message.includes("Empty CSV file")) {
+                setMessage("Error: The file is empty. Please upload a valid CSV file.");
+            } else {
+                setMessage(`Upload failed: An unexpected error occurred while processing the file.`);
+            }
+        } else {
+            setMessage("Error uploading file. Please try again.");
+        }
     }
 };
 
@@ -70,7 +104,7 @@ const FileUploader: React.FC = () => {
             >
                 Upload
             </button>
-            {message && <p className="mt-2">{message}</p>}
+            {message && <p className="mt-4">{message}</p>}
         </div>
     );
 };
