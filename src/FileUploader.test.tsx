@@ -1,8 +1,13 @@
-import React from 'react'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+/// <reference types="vitest" />
+
+
+// import React from 'react'
+import { render, screen, waitFor } from '@testing-library/react' // removed unused fireEvent
 import userEvent from '@testing-library/user-event'
 import FileUploader from './FileUploader'
 import log from 'loglevel'
+import { expect, test, describe, beforeEach, vi } from 'vitest'
+import '@testing-library/jest-dom'
 
 // Mock loglevel to suppress console output during tests
 vi.mock('loglevel', () => ({
