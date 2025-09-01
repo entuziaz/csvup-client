@@ -27,7 +27,9 @@ const FileUploader: React.FC = () => {
         log.info("Uploading file:", file.name);
         setMessage("Uploading...");
 
-        const response = await fetch("http://localhost:8000/api/v1/uploads/csv/", {
+        // const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+        const response = await fetch(`${API_URL}/api/v1/uploads/csv/`, {
             method: "POST",
             body: formData,
         });
@@ -105,6 +107,15 @@ const FileUploader: React.FC = () => {
                 Upload
             </button>
             {message && <p className="mt-4">{message}</p>}
+            {/* {message && (
+                <div className="mt-4 p-3 bg-gray-100 rounded">
+                    {message.split('\n').map((line, index) => (
+                        <p key={index} className={index === 0 ? "font-semibold" : ""}>
+                            {line}
+                        </p>
+                    ))}
+                </div>
+            )} */}
         </div>
     );
 };
