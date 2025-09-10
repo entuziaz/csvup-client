@@ -49,9 +49,11 @@ const FileUploader: React.FC = () => {
         // setMessage(`Upload: ${data.data.filename}, Rows: ${data.data.rows}`);
         // setMessage(`Upload successful: ${data.data.filename}, Successful rows: ${data.data.successful_rows}, Failed rows: ${data.data.failed_rows}`);
         let messageText = `✅Upload successful!\n`;
+        messageText += `Status: ${data.data.status}\n`;
         messageText += `File: ${data.data.filename}\n`;
         messageText += `Total rows: ${data.data.total_rows}\n`;
         messageText += `✅Successful: ${data.data.successful_rows}\n`;
+        // messageText += `✅Successful: ${data.data.failed_rows}\n`;
         
         if (data.data.duplicate_rows > 0) {
             messageText += `⚠️Duplicates skipped: ${data.data.duplicate_rows}\n`;
